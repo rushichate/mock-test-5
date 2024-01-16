@@ -62,6 +62,21 @@
             margin-left: 30px;
             color: #0277BD;
         }
+        @media screen and (max-width:1027px) {
+           #other{
+            display: block;
+           }
+        }
+        @media screen and (max-width:825px) {
+            .card{
+                display: block;
+                text-align: center;
+            }
+            #other{
+            display: flex;
+            margin-left: 0px;
+           }
+        }
     </style>
 </head>
 <body>
@@ -118,7 +133,7 @@
                            (searchQuery === '' || job.language.toLowerCase().includes(searchQuery));
                 });
 
-                // Sort data
+        
                 if (dateFilter === 'desc') {
                     filteredData.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
                 } else if (dateFilter === 'asc') {
