@@ -14,6 +14,6 @@ This is the main page og the app where you have to post your job details as you 
 ![Alt Text](./images/main.png)
 
 Ater this you can see all the job posts we have you can filter by role or filter by date even you can find by techStack by just 
-typing in search box as you see in below image
+typing in search box as you see in below image also this page is fully responsive you can checkout by reducing screen size
 ![Alt Text](./images/list.png)
 
