@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masai Job App</title>
+    <style>
+        *{
+            text-decoration: none;
+        }
+        .filter{
+            margin: 20px;
+        }
+        nav{
+            display: flex;
+            justify-content: space-around;
+            background-color: aqua;
+            border-radius: 20px;
+            border: solid black;
+        }
+        nav a{
+            margin: 3px;
+            padding: 1px;
+            border: solid brown;
+            border-radius: 20px;
+            background-color: blue;
+            color: white;
+
+        }
+        #container{
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #81D4FA;
+            border-radius: 20px;
+        }
+        .card{
+            background-color: white;
+            display: flex;
+            margin: 15px;
+            border-radius: 30px;
+        }
+        .card img{
+            border-radius: 50%;
+            border: solid black;
+            margin: 5px;
+        }
+        #names{
+            margin-left: 30px;
+            margin-top: 25px;
+        }
+        #names .title{
+            color: #0277BD;
+
+        }
+        #other{
+            margin-left: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #other h3{
+            margin-left: 30px;
+            color: #0277BD;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html"><h2>Job Posting Page</h2></a>
+        <a href="./listing.html"><h2>Jobs Listing Page</h2></a>
+    </nav>
+
+    <div class="filter">
+        <label for="">Filter By Role:</label>
+        <select id="roleFilter">
+            <option value="">Select</option>
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="FullStack">FullStack</option>
+        </select>
+        <label for="">Sort By Date:</label>
+        <select name="" id="dateFilter">
+            <option value="">Select</option>
+            <option value="desc">Latest to Oldest</option>
+            <option value="asc">Oldest to Letest</option>
+        </select>
+        <label for="">Search By TechStack:</label>
+        <input type="text" id="search" placeholder="Javascript,,Java,C,C++,etc">
+    </div>
+
+    <div id="container">
+
+    </div>
+    <span></span>
+
+    
+</body>
+
+<script>
+    const container = document.getElementById("container");
+
+    // Initial fetch and display
+    fetchJobs();
+
+    // Event listeners for filter, sort, and search
+    document.getElementById("roleFilter").addEventListener("change", fetchJobs);
+    document.getElementById("dateFilter").addEventListener("change", fetchJobs);
+    document.getElementById("search").addEventListener("input", fetchJobs);
+
+    function fetchJobs() {
+        const roleFilter = document.getElementById("roleFilter").value;
+        const dateFilter = document.getElementById("dateFilter").value;
+        const searchQuery = document.getElementById("search").value.toLowerCase();
+
+        fetch(`http://localhost:8000/jobs/`)
+            .then(res => res.json())
+            .then(data => {
+                // Apply filters
+                let filteredData = data.filter(job => {
+                    return (roleFilter === '' || job.role === roleFilter) &&
+                           (searchQuery === '' || job.language.toLowerCase().includes(searchQuery));
+                });
+
+                // Sort data
+                if (dateFilter === 'desc') {
+                    filteredData.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
+                } else if (dateFilter === 'asc') {
+                    filteredData.sort((a, b) => new Date(a.postedAt) - new Date(b.postedAt));
+                }
+
+                // Display the filtered and sorted data
+                display(filteredData);
+            })
+            .catch(error => {
+                console.error("Error Fetching Data:", error);
+            });
+    }
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const formattedDate = new Date(dateString).toLocaleDateString('en-GB', options);
+        return formattedDate;
+    }
+
+    function display(data) {
+        container.innerHTML = "";
+        data.forEach(ele => {
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrLYZhTlZ010C9qHnN3aHv8AJAircreqsk6of3e_rxoQ&s" alt="Error">
+                <div id="names">
+                    <h3 class="title">${ele.company}</h3>
+                    <h2>${ele.position}</h2>
+                    <h3>${formatDate(ele.postedAt)} - ${ele.contract} - ${ele.location} Only</h3>
+                </div>
+                <div id="other">
+                    <h3>${ele.role}</h3>
+                    <h3>${ele.level}</h3>
+                    <h3>${ele.language}</h3>
+                    <h3>${ele.city}</h3>
+                </div>`;
+            container.appendChild(card);
+        });
+    }
+</script>
+</html>

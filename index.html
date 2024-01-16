@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masai Job App</title>
+    <style>
+         *{
+            text-decoration: none;
+        }
+        nav{
+            display: flex;
+            justify-content: space-around;
+            background-color: aqua;
+            border-radius: 20px;
+            border: solid black;
+        }
+        nav a{
+            margin: 3px;
+            padding: 1px;
+            border: solid brown;
+            border-radius: 20px;
+            background-color: blue;
+            color: white;
+
+        }
+        #main{
+            display: flex;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .form{
+            display: flex;
+            justify-content: left;
+            border: solid black;
+            padding: 30px;
+            padding-right: 60px;
+            border-radius: 20px;
+            background-color: chartreuse;
+        }
+        .form input{
+            border-radius: 5px;
+            height: 20px;
+        }
+        .form select{
+            border-radius: 5px;
+            height: 20px;
+        }
+        .form label{
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .form button{
+            display: block;
+            margin-top: 10px;
+            color: white;
+            background-color: deeppink;
+            border-radius: 5px;
+        }
+        @media only screen and (max-width:425px) {
+    
+        }
+    </style>
+
+</head>
+<body>
+    <nav>
+        <a href="./index.html"><h2>Job Posting Page</h2></a>
+        <a href="./frontend/listing.html"><h2>Jobs Listing Page</h2></a>
+    </nav>
+
+    <div id="main">
+        <div class="form">
+            <form action="jobPosting" id="postjob">
+                <label for="company">Company:</label>
+                <input type="text" id="company" placeholder="Enter company name">
+                <label for="city">City:</label>
+                <input type="text"  id="city" placeholder="Enter your city">
+                <label for="location">Location:</label>
+                <input type="text" id="location" placeholder="Enter job location">
+                <label for="role">Role:</label>
+                <select id="role">
+                    <option value="">Select</option>
+                    <option value="Frontend">Frontend</option>
+                    <option value="Backend">Backend</option>
+                    <option value="FullStack">FullStack</option>
+                </select>
+                <label for="level">Level:</label>
+                <select id="level">
+                    <option value="">Seelct</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Senior">Senior</option>
+                </select>
+                <label for="contract">Contract:</label>
+                <input type="text" id="contract" placeholder="Full time,Part Time">
+                <label for="position">Position:</label>
+                <select id="position">
+                    <option value="">Select</option>
+                    <option value="Backend Developer">Backend Developer</option>
+                    <option value="Frontend Developer">Frontend Developer</option>
+                    <option value="Junior Backend Developer">Backend Developer</option>
+                    <option value="Junior Frontend Developer">Frontend Developer</option>
+                    <option value="FullStack Developer">FullStack Developer</option>
+                </select>
+                <label for="language">Language:</label>
+                <input type="text" id="language" placeholder="Javascript,,Java,C,C++,etc">
+                <button type="submit">Post Job</button>
+            </form>
+        </div>
+
+    </div>
+   
+
+   
+    
+</body>
+   
+  <script>
+
+    const jobPost = document.getElementById("postjob")
+    jobPost.addEventListener("submit",function(e){
+        e.preventDefault()
+       const company = document.getElementById("company").value 
+       const city = document.getElementById("city").value 
+       const location = document.getElementById("location").value  
+       const role = document.getElementById("role").value 
+       const level = document.getElementById("level").value 
+       const contract = document.getElementById("contract").value 
+       const position = document.getElementById("position").value 
+       const language = document.getElementById("language").value 
+
+       const payload = {company,city,location,role,level,contract,position,language}
+        fetch(`http://localhost:8000/jobs/add`,{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            alert(res.message)
+            window.location.reload()
+        })
+        .catch(error=>{
+            console.error("Error posting job",error)
+        })
+    })
+     
+  </script>
+</html>
