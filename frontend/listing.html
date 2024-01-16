@@ -99,10 +99,8 @@
 <script>
     const container = document.getElementById("container");
 
-    // Initial fetch and display
     fetchJobs();
 
-    // Event listeners for filter, sort, and search
     document.getElementById("roleFilter").addEventListener("change", fetchJobs);
     document.getElementById("dateFilter").addEventListener("change", fetchJobs);
     document.getElementById("search").addEventListener("input", fetchJobs);
@@ -112,10 +110,9 @@
         const dateFilter = document.getElementById("dateFilter").value;
         const searchQuery = document.getElementById("search").value.toLowerCase();
 
-        fetch(`http://localhost:8000/jobs/`)
+        fetch(`https://masaijob-644t.onrender.com/jobs/`)
             .then(res => res.json())
             .then(data => {
-                // Apply filters
                 let filteredData = data.filter(job => {
                     return (roleFilter === '' || job.role === roleFilter) &&
                            (searchQuery === '' || job.language.toLowerCase().includes(searchQuery));
@@ -128,7 +125,7 @@
                     filteredData.sort((a, b) => new Date(a.postedAt) - new Date(b.postedAt));
                 }
 
-                // Display the filtered and sorted data
+            
                 display(filteredData);
             })
             .catch(error => {

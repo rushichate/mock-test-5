@@ -133,7 +133,7 @@
        const language = document.getElementById("language").value 
 
        const payload = {company,city,location,role,level,contract,position,language}
-        fetch(`http://localhost:8000/jobs/add`,{
+        fetch(`https://masaijob-644t.onrender.com/add`,{
             method:"POST",
             headers:{
                 "Content-type":"application/json"

@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get("/",(req,res)=>{
-    res.json("Welcome to ")
+    res.json("Welcome to Masai Job App")
 })
 app.use("/jobs",jobRouter)
 
